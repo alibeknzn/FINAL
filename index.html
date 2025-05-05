@@ -2,20 +2,27 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Google Calendar & Tasks</title>
+    <title>Sham School - Calendar & Tasks Portal</title>
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://accounts.google.com/gsi/client"></script>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Georgia:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
-      <h1>Google Calendar & Tasks</h1>
+      <h1>Sham School Calendar & Tasks</h1>
 
       <div id="auth-section">
+        <div class="logo">Sham School</div>
         <h2>Sign in to access your data</h2>
         <p class="auth-note">
-          Sign in with your Google account to view your Calendar Events and
-          Tasks.
+          Welcome to Sham School's Calendar & Tasks Portal. Sign in with your
+          Google account to view your schedule and manage your tasks.
         </p>
         <button
           id="authorize-button"
@@ -68,42 +75,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-      // Show debug panel for troubleshooting
-      function toggleDebugInfo() {
-        const debugSection = document.getElementById('debug-info');
-        debugSection.style.display =
-          debugSection.style.display === 'none' ? 'block' : 'none';
-      }
-
-      // Add keyboard shortcut (Ctrl+D) to show debug info
-      document.addEventListener('keydown', function (event) {
-        if (event.ctrlKey && event.key === 'd') {
-          event.preventDefault();
-          toggleDebugInfo();
-
-          // Display debug info
-          const debugContent = document.getElementById('debug-content');
-          let html = '<ul>';
-          html += `<li>API Key set: ${API_KEY ? 'Yes' : 'No'}</li>`;
-          html += `<li>User signed in: ${userProfile ? 'Yes' : 'No'}</li>`;
-          if (userProfile) {
-            html += `<li>User email: ${userProfile.email}</li>`;
-          }
-          html += `<li>Tasks API loaded: ${
-            gapi.client && gapi.client.tasks ? 'Yes' : 'No'
-          }</li>`;
-          html += `<li>Calendar API loaded: ${
-            gapi.client && gapi.client.calendar ? 'Yes' : 'No'
-          }</li>`;
-          html += '</ul>';
-
-          html +=
-            '<p>Check your browser console (F12) for more detailed logs.</p>';
-
-          debugContent.innerHTML = html;
-        }
-      });
-    </script>
   </body>
 </html>
