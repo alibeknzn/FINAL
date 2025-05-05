@@ -1,26 +1,87 @@
 body {
   font-family: 'Montserrat', sans-serif;
-  background: #f2f5f9;
   margin: 0;
-  padding: 30px;
+  padding: 0;
   color: #333;
   transition: background 0.4s ease, color 0.4s ease;
+  background: url('image.png') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add overlay to ensure text readability */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  z-index: -1;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  background: white;
+  background: rgba(255, 255, 255, 0.85);
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   transition: background 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+}
+
+/* When not in login mode, adjust the container for better content display */
+.container:not(.container-login) {
+  width: 90%;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px 0 0 0;
+}
+
+/* Decorative elements for the Sham School theme */
+.container::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background-color: #ffc107;
+  opacity: 0.03;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.container::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  background-color: #0065a9;
+  opacity: 0.03;
+  border-radius: 50%;
+  z-index: 0;
 }
 
 h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 32px;
+  margin-bottom: 30px;
   text-align: center;
+  color: #333;
+  font-weight: 700;
+  padding: 0 30px;
+  position: relative;
+  z-index: 1;
 }
 
 h2 {
@@ -107,15 +168,18 @@ body.dark-mode .view-switch .active {
   background: #4a90e2;
   color: white;
 }
+
 .tab-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: white;
   padding: 12px 24px;
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .tabs {
@@ -128,18 +192,23 @@ body.dark-mode .view-switch .active {
   border: none;
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: border-color 0.3s;
+  transition: all 0.2s ease;
+  color: #666;
+  position: relative;
+  font-weight: 500;
 }
 
 .tab:hover {
-  border-color: #ccc;
+  background-color: rgba(0, 101, 169, 0.08);
+  color: #0065a9;
 }
 
 .tab.active {
-  border-color: #2962ff; /* синий акцент */
+  background-color: rgba(0, 101, 169, 0.1);
+  color: #0065a9;
   font-weight: 600;
 }
 
@@ -152,38 +221,136 @@ body.dark-mode .view-switch .active {
 /* Auth Section */
 #auth-section {
   text-align: center;
-  padding: 40px 0;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 90%;
+  margin: 0 auto;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  z-index: 2;
+}
+
+#auth-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+#auth-section h2 {
+  color: #0065a9;
+  font-size: 28px;
+  margin-bottom: 5px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Apple icon for Sham School logo */
+#auth-section .logo {
+  font-family: 'Georgia', serif;
+  font-size: 42px;
+  font-weight: bold;
+  color: #0065a9;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.5);
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+#auth-section .logo::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -50px;
+  width: 40px;
+  height: 40px;
+  background-color: #ffc107;
+  border-radius: 50% 50% 50% 15%;
+  transform: rotate(-20deg);
+  z-index: -1;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+#auth-section .logo::after {
+  content: '';
+  position: absolute;
+  top: -25px;
+  left: -30px;
+  width: 10px;
+  height: 15px;
+  background-color: #236a3a;
+  border-radius: 2px;
+  transform: rotate(-40deg);
+  z-index: -1;
+}
+
+.auth-note {
+  color: #0065a9;
+  font-size: 16px;
+  margin-bottom: 40px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+  font-weight: 500;
 }
 
 .btn-primary {
-  background-color: #4285f4;
+  background-color: #0065a9;
   color: white;
   border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 4px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .btn-primary:hover {
-  background-color: #3367d6;
+  background-color: #005490;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 101, 169, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
-  background-color: #f1f3f4;
-  color: #5f6368;
-  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #0065a9;
+  border: 1px solid rgba(0, 101, 169, 0.2);
   padding: 8px 16px;
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .btn-secondary:hover {
-  background-color: #e8eaed;
+  background-color: #0065a9;
+  color: white;
+  border-color: #0065a9;
 }
 
 /* Profile Section */
@@ -191,11 +358,15 @@ body.dark-mode .view-switch .active {
   display: flex;
   align-items: center;
   gap: 16px;
+  background: rgba(0, 101, 169, 0.05);
+  padding: 8px 16px;
+  border-radius: 30px;
 }
 
 #user-email {
   font-size: 14px;
-  color: #5f6368;
+  color: #0065a9;
+  font-weight: 500;
 }
 
 /* Events Display */
@@ -337,11 +508,11 @@ body.dark-mode .view-switch .active {
 
 .task-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
   border-bottom: 1px solid #e8eaed;
   transition: background-color 0.2s;
+  gap: 12px;
 }
 
 .task-item:hover {
@@ -363,6 +534,10 @@ body.dark-mode .view-switch .active {
 
 /* For smaller screens */
 @media (max-width: 768px) {
+  body {
+    padding: 20px;
+  }
+
   .container {
     padding: 20px;
   }
@@ -374,6 +549,15 @@ body.dark-mode .view-switch .active {
 
   .events-grid {
     grid-template-columns: 1fr;
+  }
+
+  #auth-section {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+
+  #auth-section .logo {
+    font-size: 32px;
   }
 }
 
@@ -492,4 +676,87 @@ body.dark-mode .view-switch .active {
 .loading-container p {
   color: #5f6368;
   font-size: 16px;
+}
+
+/* Container styling when showing the login page */
+.container-login {
+  max-width: 100%;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none;
+  position: relative;
+}
+
+/* Tab content area styling */
+.tab-content {
+  background: white;
+  padding: 30px;
+  border-radius: 0 0 12px 12px;
+  min-height: 300px;
+}
+
+/* Calendar tab specific styling */
+#calendar-tab h2,
+#tasks-tab h2 {
+  color: #0065a9;
+  font-size: 24px;
+  margin-bottom: 25px;
+  position: relative;
+  display: inline-block;
+}
+
+#calendar-tab h2::after,
+#tasks-tab h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #0065a9, #ffc107);
+  border-radius: 3px;
+}
+
+/* Task styling enhancements */
+.add-task-container {
+  margin-bottom: 20px;
+}
+
+.add-task-btn {
+  background-color: #0065a9;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-task-btn::before {
+  content: '+';
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.add-task-btn:hover {
+  background-color: #005490;
+  transform: translateY(-2px);
+}
+
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #0065a9;
 }
