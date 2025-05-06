@@ -14,29 +14,24 @@
     />
   </head>
   <body>
-      <div class="center-wrapper" >
-        <div id="logo-login" class="logo-login">
-          <div class="logo-side">
-            <img src="pictures/logo.png" alt="Sham School Logo" class="logo-icon" />
-          </div>
-    
-          <div class="login-box">
-            <h2>Sign in to access your data</h2>
-            <p class="auth-note">
-              Welcome to Sham School's Calendar & Tasks Portal. Sign in with your Google account to view your schedule and manage your tasks.
-            </p>
-    
-            <div class="social-login">
-              <button id="authorize-button" onclick="handleAuthClick()" class="btn-primary">
-                Sign in with Google
-              </button>
-            </div>
-          </div>
-        </div>
-    </div>
-    
-      
-      
+    <div class="container">
+
+      <div id="auth-section">
+        <img src="pictures/logo.png" alt="Sham logo" class="logo-login" />
+        <h2>Sign in to access your data</h2>
+        <p class="auth-note">
+          Welcome to Sham School's Calendar & Tasks Portal. Sign in with your
+          Google account to view your schedule and manage your tasks.
+        </p>
+        <button
+          id="authorize-button"
+          onclick="handleAuthClick()"
+          class="btn-primary"
+        >
+          Sign in with Google
+        </button>
+      </div>
+
       <!-- Loading indicator -->
       <div id="loading-section" style="display: none">
         <div class="loading-container">
