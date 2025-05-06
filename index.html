@@ -30,16 +30,17 @@
          >
            Sign in with Google
          </button>
-         <div id="task-modal" class="modal">
        </div>
  
        </div>
-       <div class="modal-content">
-           <span class="close-button" onclick="closeTaskModal()">&times;</span>
-           <h2>Add a New Task</h2>
-           <input type="text" id="new-task-title" placeholder="Task title" />
-           <button class="btn-primary" onclick="submitTask()">Add Task</button>
-       </div>
+       <div id="task-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close-button" onclick="closeTaskModal()">&times;</span>
+          <h2>Add a New Task</h2>
+          <input type="text" id="new-task-title" placeholder="Task title" />
+          <button class="btn-primary" onclick="submitTask()">Add Task</button>
+        </div>
+      </div>
        <!-- Loading indicator -->
        <div id="loading-section" style="display: none">
          <div class="loading-container">
