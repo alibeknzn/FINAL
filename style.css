@@ -26,19 +26,28 @@ body {
    z-index: -1;
  }
  
- .logo-login {
-   overflow: hidden;
-   max-width: 300px;
- }
+.logo-login {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
  
- .container {
-   max-width: 1200px;
-   margin: 0 auto;
-   padding: 30px;
-   border-radius: 12px;
-   position: relative;
- }
- 
+.container {
+  z-index: 1;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  text-align: center;
+}
+
+.auth-note {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 25px;
+}
+
  /* If not using login mode, adjust container */
  .container:not(.container-login) {
    width: 90%;
