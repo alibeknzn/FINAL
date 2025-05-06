@@ -108,7 +108,6 @@ function handleAuthClick() {
   document.getElementById('logo-login').style.display = 'none';
   document.getElementById('loading-section').style.display = 'block';
 
-  // Use newer Identity Services library
   google.accounts.oauth2
     .initTokenClient({
       client_id: CLIENT_ID,
@@ -119,7 +118,6 @@ function handleAuthClick() {
     .requestAccessToken();
 }
 
-// Handle the auth response
 function handleAuthResponse(response) {
   console.log('Auth response received:', response);
 
@@ -127,19 +125,18 @@ function handleAuthResponse(response) {
     console.error('Error in auth response:', response.error);
     showError('Authentication failed: ' + response.error);
     showLoginScreen();
+    document.getElementById('loading-section').style.display = 'none';  // Hide loading
     return;
   }
 
   if (response.access_token) {
-    // Store the token
+    console.log('Access token received:', response.access_token);  // Log the token
     const tokenExpiryTime = new Date().getTime() + response.expires_in * 1000;
     localStorage.setItem(STORAGE_KEY_TOKEN, response.access_token);
     localStorage.setItem(STORAGE_KEY_EXPIRY, tokenExpiryTime.toString());
 
-    // Set the token for API calls
     gapi.client.setToken({ access_token: response.access_token });
 
-    // Get user profile
     fetchUserProfile()
       .then(() => {
         loadUserData();
@@ -148,51 +145,17 @@ function handleAuthResponse(response) {
         console.error('Error fetching user profile:', error);
         showError('Failed to fetch user profile. Please try again.');
         showLoginScreen();
+      })
+      .finally(() => {
+        document.getElementById('loading-section').style.display = 'none';  // Hide loading after completion
       });
   } else {
     showError('No access token received. Please try again.');
     showLoginScreen();
+    document.getElementById('loading-section').style.display = 'none';  // Hide loading if token not received
   }
 }
 
-// Fetch the user profile using the UserInfo endpoint instead of People API
-async function fetchUserProfile() {
-  try {
-    // Use the UserInfo endpoint instead of People API
-    const response = await fetch(
-      'https://www.googleapis.com/oauth2/v3/userinfo',
-      {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem(STORAGE_KEY_TOKEN),
-        },
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`UserInfo request failed with status ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // Extract profile info
-    userProfile = {
-      id: data.sub,
-      name: data.name || 'User',
-      email: data.email || 'No email',
-      imageUrl: data.picture || '',
-    };
-
-    console.log('User profile:', userProfile);
-
-    // Store profile in localStorage
-    localStorage.setItem(STORAGE_KEY_PROFILE, JSON.stringify(userProfile));
-
-    return userProfile;
-  } catch (error) {
-    console.error('Error fetching profile:', error);
-    throw new Error('Failed to fetch user profile');
-  }
-}
 
 // Handle sign-out click
 function handleSignoutClick() {
