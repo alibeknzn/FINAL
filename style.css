@@ -536,28 +536,6 @@ body.dark-mode .view-switch .active {
   color: #444;
 }
 
-.close-button:hover {
-  color: #000;
-}
-
-@keyframes fadeIn {
-  from {
-    background-color: rgba(0, 0, 0, 0);
-  }
-  to {
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-}
-@keyframes slideUp {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 
 #new-task-title {
   width: 100%;
