@@ -1,17 +1,17 @@
 const CLIENT_ID =
-  '238459408958-ug5nb6iam75o9pbemkca73iimlss78vf.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyAR4A_D28oNNn_tCl6_VWgbKnhw_NSkJzo';
+  "238459408958-ug5nb6iam75o9pbemkca73iimlss78vf.apps.googleusercontent.com";
+const API_KEY = "AIzaSyAR4A_D28oNNn_tCl6_VWgbKnhw_NSkJzo";
 const DISCOVERY_DOCS = [
-  'https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest',
-  'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
+  "https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest",
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
 ];
 const SCOPES =
-  'https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/calendar';
+  "https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/calendar";
 
 // Storage keys
-const STORAGE_KEY_TOKEN = 'google_token';
-const STORAGE_KEY_PROFILE = 'user_profile';
-const STORAGE_KEY_EXPIRY = 'token_expiry';
+const STORAGE_KEY_TOKEN = "google_token";
+const STORAGE_KEY_PROFILE = "user_profile";
+const STORAGE_KEY_EXPIRY = "token_expiry";
 
 let userProfile = null;
 let isAuthorized = false;
@@ -19,7 +19,7 @@ let currentTaskListId = null;
 
 // Called when the page loads
 function handleClientLoad() {
-  console.log('Loading GAPI client...');
+  console.log("Loading GAPI client...");
 
   // Try to load profile from localStorage
   const savedProfile = localStorage.getItem(STORAGE_KEY_PROFILE);
@@ -32,7 +32,7 @@ function handleClientLoad() {
     new Date().getTime() < parseInt(tokenExpiry, 10)
   ) {
     userProfile = JSON.parse(savedProfile);
-    console.log('Restored profile from localStorage:', userProfile);
+    console.log("Restored profile from localStorage:", userProfile);
 
     // Initialize API client and proceed with stored credentials
     initializeApiClient(true);
@@ -46,45 +46,48 @@ function handleClientLoad() {
 }
 
 // Initialize just the API client without auth
-async function initializeApiClient(autoLoadData) {
+function initializeApiClient(autoLoadData) {
+  console.log("Initializing Google API client...");
+
   try {
-    await gapi.load('client', async () => {
+    gapi.load("client", async () => {
       try {
         await gapi.client.init({
           apiKey: API_KEY,
           discoveryDocs: DISCOVERY_DOCS,
         });
-        console.log('GAPI client initialized');
+        console.log("GAPI client initialized");
 
-        // If we have stored credentials, load user data
         if (autoLoadData && userProfile) {
-          // Set the token from localStorage
           const token = localStorage.getItem(STORAGE_KEY_TOKEN);
           if (token) {
+            console.log("Token found, setting it...");
             gapi.client.setToken({ access_token: token });
 
-            // Show loading and load user data
-            document.getElementById('logo-login').style.display = 'none';
-            document.getElementById('loading-section').style.display = 'block';
+            // Показываем загрузку и загружаем данные пользователя
+            document.getElementById("logo-login").style.display = "none";
+            document.getElementById("loading-section").style.display = "block";
             loadUserData();
           } else {
+            console.log("No token found, showing login screen");
             showLoginScreen();
           }
         } else {
+          console.log("No auto-load data, showing login screen");
           showLoginScreen();
         }
       } catch (error) {
-        console.error('Error initializing GAPI client:', error);
+        console.error("Error initializing GAPI client:", error);
         showError(
-          'Failed to initialize Google API. Please check your connection and try again.',
+          "Failed to initialize Google API. Please check your connection and try again."
         );
         showLoginScreen();
       }
     });
   } catch (error) {
-    console.error('Error loading GAPI client:', error);
+    console.error("Error loading GAPI client:", error);
     showError(
-      'Failed to load Google API. Please refresh the page and try again.',
+      "Failed to load Google API. Please refresh the page and try again."
     );
     showLoginScreen();
   }
@@ -92,45 +95,70 @@ async function initializeApiClient(autoLoadData) {
 
 // Show the login screen
 function showLoginScreen() {
-  document.getElementById('logo-login').style.display = 'block';
-  document.getElementById('loading-section').style.display = 'none';
-  document.getElementById('content-section').style.display = 'none';
+  document.getElementById("logo-login").style.display = "block";
+  document.getElementById("loading-section").style.display = "none";
+  document.getElementById("content-section").style.display = "none";
 
   // Add the login-specific container class to better showcase the background image
-  document.querySelector('.container').classList.add('container-login');
+  document.querySelector(".container").classList.add("container-login");
 }
 
 // Handle auth click - using the new Identity Services
 function handleAuthClick() {
-  console.log('Auth button clicked, starting sign-in process...');
+  console.log("Auth button clicked, starting sign-in process...");
 
   // Show loading indicator while authenticating
-  document.getElementById('logo-login').style.display = 'none';
-  document.getElementById('loading-section').style.display = 'block';
+  document.getElementById("logo-login").style.display = "none";
+  document.getElementById("loading-section").style.display = "block";
 
   google.accounts.oauth2
     .initTokenClient({
       client_id: CLIENT_ID,
       scope: SCOPES,
-      prompt: 'consent',
+      prompt: "consent",
       callback: handleAuthResponse,
     })
     .requestAccessToken();
 }
 
+function fetchUserProfile() {
+  console.log("Fetching user profile...");
+  return fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem(STORAGE_KEY_TOKEN),
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("User profile fetched:", data);
+      // Сохраняем профиль в localStorage
+      localStorage.setItem(STORAGE_KEY_PROFILE, JSON.stringify(data));
+      return data;
+    })
+    .catch((error) => {
+      console.error("Error fetching profile:", error);
+      throw error;
+    });
+}
+
 function handleAuthResponse(response) {
-  console.log('Auth response received:', response);
+  console.log("Auth response received:", response);
 
   if (response.error) {
-    console.error('Error in auth response:', response.error);
-    showError('Authentication failed: ' + response.error);
+    console.error("Error in auth response:", response.error);
+    showError("Authentication failed: " + response.error);
     showLoginScreen();
-    document.getElementById('loading-section').style.display = 'none';  // Hide loading
+    document.getElementById("loading-section").style.display = "none"; // Hide loading
     return;
   }
 
   if (response.access_token) {
-    console.log('Access token received:', response.access_token);  // Log the token
+    console.log("Access token received:", response.access_token); // Log the token
     const tokenExpiryTime = new Date().getTime() + response.expires_in * 1000;
     localStorage.setItem(STORAGE_KEY_TOKEN, response.access_token);
     localStorage.setItem(STORAGE_KEY_EXPIRY, tokenExpiryTime.toString());
@@ -142,24 +170,23 @@ function handleAuthResponse(response) {
         loadUserData();
       })
       .catch((error) => {
-        console.error('Error fetching user profile:', error);
-        showError('Failed to fetch user profile. Please try again.');
+        console.error("Error fetching user profile:", error);
+        showError("Failed to fetch user profile. Please try again.");
         showLoginScreen();
       })
       .finally(() => {
-        document.getElementById('loading-section').style.display = 'none';  // Hide loading after completion
+        document.getElementById("loading-section").style.display = "none"; // Hide loading after completion
       });
   } else {
-    showError('No access token received. Please try again.');
+    showError("No access token received. Please try again.");
     showLoginScreen();
-    document.getElementById('loading-section').style.display = 'none';  // Hide loading if token not received
+    document.getElementById("loading-section").style.display = "none"; // Hide loading if token not received
   }
 }
 
-
 // Handle sign-out click
 function handleSignoutClick() {
-  console.log('Sign-out button clicked');
+  console.log("Sign-out button clicked");
 
   // Clear stored auth data
   clearStoredAuth();
@@ -184,26 +211,26 @@ function clearStoredAuth() {
 function loadUserData() {
   // Display user email
   if (userProfile && userProfile.email) {
-    document.getElementById('user-email').textContent = userProfile.email;
+    document.getElementById("user-email").textContent = userProfile.email;
   }
 
   // Remove the login-specific container class
-  document.querySelector('.container').classList.remove('container-login');
+  document.querySelector(".container").classList.remove("container-login");
 
   // Load calendar events first
   loadCalendarEvents()
     .then(() => {
       // Show content section after data is loaded
-      document.getElementById('loading-section').style.display = 'none';
-      document.getElementById('content-section').style.display = 'block';
+      document.getElementById("loading-section").style.display = "none";
+      document.getElementById("content-section").style.display = "block";
 
       // Also load tasks in background
       loadTasks().catch((error) => {
-        console.error('Error loading tasks:', error);
+        console.error("Error loading tasks:", error);
       });
     })
     .catch((error) => {
-      console.error('Error loading calendar events:', error);
+      console.error("Error loading calendar events:", error);
 
       // Check if this is an auth error
       if (
@@ -211,17 +238,17 @@ function loadUserData() {
         error.status === 403 ||
         (error.result &&
           error.result.error &&
-          (error.result.error.status === 'UNAUTHENTICATED' ||
-            error.result.error.status === 'PERMISSION_DENIED'))
+          (error.result.error.status === "UNAUTHENTICATED" ||
+            error.result.error.status === "PERMISSION_DENIED"))
       ) {
-        console.log('Authentication error detected, clearing stored auth');
+        console.log("Authentication error detected, clearing stored auth");
         clearStoredAuth();
-        showError('Your session has expired. Please sign in again.');
+        showError("Your session has expired. Please sign in again.");
         showLoginScreen();
       } else {
         // For other errors, still show content with error message
-        document.getElementById('loading-section').style.display = 'none';
-        document.getElementById('content-section').style.display = 'block';
+        document.getElementById("loading-section").style.display = "none";
+        document.getElementById("content-section").style.display = "block";
       }
     });
 }
@@ -232,31 +259,31 @@ function showError(message) {
 }
 
 function switchTab(tabName) {
-  document.querySelectorAll('.tab').forEach((tab) => {
-    tab.classList.remove('active');
+  document.querySelectorAll(".tab").forEach((tab) => {
+    tab.classList.remove("active");
   });
-  event.target.classList.add('active');
+  event.target.classList.add("active");
 
-  document.querySelectorAll('.tab-content').forEach((content) => {
-    content.style.display = 'none';
+  document.querySelectorAll(".tab-content").forEach((content) => {
+    content.style.display = "none";
   });
 
-  if (tabName === 'calendar') {
-    document.getElementById('calendar-tab').style.display = 'block';
+  if (tabName === "calendar") {
+    document.getElementById("calendar-tab").style.display = "block";
     loadCalendarEvents().catch((error) => {
-      console.error('Error reloading calendar events:', error);
+      console.error("Error reloading calendar events:", error);
     });
-  } else if (tabName === 'tasks') {
-    document.getElementById('tasks-tab').style.display = 'block';
+  } else if (tabName === "tasks") {
+    document.getElementById("tasks-tab").style.display = "block";
     loadTasks().catch((error) => {
-      console.error('Error reloading tasks:', error);
+      console.error("Error reloading tasks:", error);
     });
   }
 }
 
 // Load calendar events and return promise
 function loadCalendarEvents() {
-  const eventsContainer = document.getElementById('events-list');
+  const eventsContainer = document.getElementById("events-list");
   eventsContainer.innerHTML =
     '<p class="loading-message">Loading your calendar events...</p>';
 
@@ -265,46 +292,46 @@ function loadCalendarEvents() {
   thirtyDaysLater.setDate(today.getDate() + 30);
 
   console.log(
-    'Fetching calendar events from',
+    "Fetching calendar events from",
     today.toISOString(),
-    'to',
-    thirtyDaysLater.toISOString(),
+    "to",
+    thirtyDaysLater.toISOString()
   );
 
   return gapi.client.calendar.events
     .list({
-      calendarId: 'primary',
+      calendarId: "primary",
       timeMin: today.toISOString(),
       timeMax: thirtyDaysLater.toISOString(),
       showDeleted: false,
       singleEvents: true,
       maxResults: 20,
-      orderBy: 'startTime',
+      orderBy: "startTime",
     })
     .then((response) => {
-      console.log('Calendar API response:', response);
+      console.log("Calendar API response:", response);
       const events = response.result.items;
-      console.log('Found', events ? events.length : 0, 'calendar events');
+      console.log("Found", events ? events.length : 0, "calendar events");
 
       if (events && events.length > 0) {
-        console.log('First event:', events[0]);
+        console.log("First event:", events[0]);
       }
 
       displayEvents(events);
       return events;
     })
     .catch((error) => {
-      console.error('Error fetching calendar events', error);
+      console.error("Error fetching calendar events", error);
       eventsContainer.innerHTML =
         '<p class="error-message">Error loading events: ' +
-        (error.result?.error?.message || error.message || 'Unknown error') +
-        '</p>';
+        (error.result?.error?.message || error.message || "Unknown error") +
+        "</p>";
       throw error;
     });
 }
 
 function displayEvents(events) {
-  const eventsContainer = document.getElementById('events-list');
+  const eventsContainer = document.getElementById("events-list");
 
   if (!events || events.length === 0) {
     eventsContainer.innerHTML =
@@ -318,7 +345,7 @@ function displayEvents(events) {
     const start = event.start.dateTime
       ? new Date(event.start.dateTime)
       : new Date(event.start.date);
-    const dateStr = start.toISOString().split('T')[0]; // YYYY-MM-DD format
+    const dateStr = start.toISOString().split("T")[0]; // YYYY-MM-DD format
 
     if (!eventsByDate[dateStr]) {
       eventsByDate[dateStr] = [];
@@ -326,14 +353,14 @@ function displayEvents(events) {
     eventsByDate[dateStr].push(event);
   });
 
-  let html = '';
+  let html = "";
 
   // Sort dates chronologically
   const sortedDates = Object.keys(eventsByDate).sort();
 
   sortedDates.forEach((dateStr) => {
     const date = new Date(dateStr);
-    const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    const dateOptions = { weekday: "long", month: "long", day: "numeric" };
     const formattedDate = date.toLocaleDateString(undefined, dateOptions);
 
     // Add date header
@@ -349,47 +376,47 @@ function displayEvents(events) {
         ? new Date(event.end.dateTime)
         : new Date(event.start.date);
 
-      const timeOptions = { hour: '2-digit', minute: '2-digit' };
+      const timeOptions = { hour: "2-digit", minute: "2-digit" };
 
       const startTimeStr = event.start.dateTime
         ? start.toLocaleTimeString(undefined, timeOptions)
-        : 'All day';
+        : "All day";
       const endTimeStr = event.end.dateTime
         ? end.toLocaleTimeString(undefined, timeOptions)
-        : '';
+        : "";
 
-      const timeStr = startTimeStr + (endTimeStr ? ` - ${endTimeStr}` : '');
+      const timeStr = startTimeStr + (endTimeStr ? ` - ${endTimeStr}` : "");
 
       // Format calendar color
-      const calendarColor = event.colorId ? `color-${event.colorId}` : '';
+      const calendarColor = event.colorId ? `color-${event.colorId}` : "";
 
       html += `
         <div class="event-card ${calendarColor}">
           <div class="event-time">${timeStr}</div>
-          <div class="event-title">${event.summary || 'Untitled Event'}</div>
+          <div class="event-title">${event.summary || "Untitled Event"}</div>
           ${
             event.location
               ? `<div class="event-location">📍 ${event.location}</div>`
-              : ''
+              : ""
           }
           ${
             event.description
               ? `<div class="event-description">${truncateText(
                   event.description,
-                  100,
+                  100
                 )}</div>`
-              : ''
+              : ""
           }
           ${
             event.hangoutLink
               ? `<div class="event-meet"><a href="${event.hangoutLink}" target="_blank">Join Google Meet</a></div>`
-              : ''
+              : ""
           }
         </div>
       `;
     });
 
-    html += '</div>';
+    html += "</div>";
   });
 
   eventsContainer.innerHTML = html;
@@ -398,22 +425,22 @@ function displayEvents(events) {
 // Helper function to truncate text
 function truncateText(text, maxLength) {
   if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + '...';
+  return text.substring(0, maxLength) + "...";
 }
 
 // Load tasks and return promise
 function loadTasks() {
-  const taskList = document.getElementById('task-list');
-  taskList.innerHTML = '<li>Loading tasks...</li>';
+  const taskList = document.getElementById("task-list");
+  taskList.innerHTML = "<li>Loading tasks...</li>";
 
-  console.log('Starting to load task lists...');
+  console.log("Starting to load task lists...");
 
   // Check if API is properly initialized
   if (!gapi.client.tasks) {
-    console.error('Tasks API not loaded properly');
+    console.error("Tasks API not loaded properly");
     taskList.innerHTML =
-      '<li>Error: Google Tasks API not loaded. Check your API key and console for details.</li>';
-    return Promise.reject(new Error('Tasks API not loaded'));
+      "<li>Error: Google Tasks API not loaded. Check your API key and console for details.</li>";
+    return Promise.reject(new Error("Tasks API not loaded"));
   }
 
   // Store the active task list ID globally
@@ -422,32 +449,32 @@ function loadTasks() {
   return gapi.client.tasks.tasklists
     .list()
     .then((response) => {
-      console.log('Task lists response:', response);
+      console.log("Task lists response:", response);
 
       if (!response.result.items || response.result.items.length === 0) {
-        console.log('No task lists found');
+        console.log("No task lists found");
         taskList.innerHTML =
-          '<li>No task lists found. Create a task list in Google Tasks first.</li>';
+          "<li>No task lists found. Create a task list in Google Tasks first.</li>";
         return null;
       }
 
       activeTaskListId = response.result.items[0].id;
-      console.log('Using task list ID:', activeTaskListId);
+      console.log("Using task list ID:", activeTaskListId);
 
       return gapi.client.tasks.tasks.list({ tasklist: activeTaskListId });
     })
     .then((resp) => {
       if (!resp) return; // Handle if previous promise didn't return tasks
 
-      console.log('Tasks response:', resp);
+      console.log("Tasks response:", resp);
       const tasks = resp.result.items || [];
-      taskList.innerHTML = '';
+      taskList.innerHTML = "";
 
       if (tasks.length === 0) {
-        console.log('No tasks found in list');
+        console.log("No tasks found in list");
 
         // Add a button to add a new task
-        const noTasksElement = document.createElement('div');
+        const noTasksElement = document.createElement("div");
         noTasksElement.innerHTML = `
           <p>No tasks found in this list.</p>
           <button id="add-task-btn" class="add-task-btn">Add a new task</button>
@@ -456,8 +483,8 @@ function loadTasks() {
 
         // Add event listener for the add task button
         document
-          .getElementById('add-task-btn')
-          .addEventListener('click', () => {
+          .getElementById("add-task-btn")
+          .addEventListener("click", () => {
             addNewTask(activeTaskListId);
           });
 
@@ -465,48 +492,48 @@ function loadTasks() {
       }
 
       // Add a button to add a new task at the top
-      const addTaskBtn = document.createElement('div');
-      addTaskBtn.className = 'add-task-container';
+      const addTaskBtn = document.createElement("div");
+      addTaskBtn.className = "add-task-container";
       addTaskBtn.innerHTML = `<button id="add-task-btn" class="add-task-btn">Add a new task</button>`;
       taskList.appendChild(addTaskBtn);
 
       // Add event listener for the add task button
-      document.getElementById('add-task-btn').addEventListener('click', () => {
+      document.getElementById("add-task-btn").addEventListener("click", () => {
         addNewTask(activeTaskListId);
       });
 
       console.log(`Found ${tasks.length} tasks, rendering...`);
       tasks.forEach((task) => {
-        console.log('Task:', task.title, 'Status:', task.status);
+        console.log("Task:", task.title, "Status:", task.status);
         if (!task.status) {
-          task.status = 'needsAction';
+          task.status = "needsAction";
         }
-        const li = document.createElement('li');
-        li.className = 'task-item';
+        const li = document.createElement("li");
+        li.className = "task-item";
         li.dataset.taskId = task.id;
         li.dataset.taskListId = activeTaskListId;
 
         li.innerHTML = `
           <input type="checkbox" class="task-checkbox" ${
-            task.status === 'completed' ? 'checked' : ''
+            task.status === "completed" ? "checked" : ""
           }>
           <span class="task-title ${
-            task.status === 'completed' ? 'completed' : ''
+            task.status === "completed" ? "completed" : ""
           }">
-            ${task.title || 'Untitled Task'}
+            ${task.title || "Untitled Task"}
           </span>
         `;
 
         // Add event listener to handle checkbox clicks
-        li.querySelector('.task-checkbox').addEventListener(
-          'click',
+        li.querySelector(".task-checkbox").addEventListener(
+          "click",
           function (event) {
             const isCompleted = this.checked;
             const taskId = li.dataset.taskId;
             const taskListId = li.dataset.taskListId;
 
             updateTaskStatus(taskListId, taskId, isCompleted);
-          },
+          }
         );
 
         taskList.appendChild(li);
@@ -515,9 +542,9 @@ function loadTasks() {
       return tasks;
     })
     .catch((error) => {
-      console.error('Error in loadTasks:', error);
+      console.error("Error in loadTasks:", error);
       taskList.innerHTML = `<li>Error loading tasks: ${
-        error.message || 'Unknown error'
+        error.message || "Unknown error"
       }</li>`;
       throw error;
     });
@@ -529,13 +556,13 @@ function addNewTask(taskListId) {
   openTaskModal();
   return;
 
-  console.log('Adding new task:', taskTitle);
+  console.log("Adding new task:", taskTitle);
 
   // Show loading indicator
-  const taskList = document.getElementById('task-list');
-  const loadingLi = document.createElement('li');
-  loadingLi.textContent = 'Adding task...';
-  loadingLi.className = 'task-item loading';
+  const taskList = document.getElementById("task-list");
+  const loadingLi = document.createElement("li");
+  loadingLi.textContent = "Adding task...";
+  loadingLi.className = "task-item loading";
   taskList.appendChild(loadingLi);
 
   // Call the API to add the task
@@ -544,19 +571,19 @@ function addNewTask(taskListId) {
       tasklist: taskListId,
       resource: {
         title: taskTitle,
-        status: 'needsAction',
+        status: "needsAction",
       },
     })
     .then((response) => {
-      console.log('Task added successfully:', response);
+      console.log("Task added successfully:", response);
       // Reload the tasks list
       loadTasks();
     })
     .catch((error) => {
-      console.error('Error adding task:', error);
+      console.error("Error adding task:", error);
       alert(
-        'Failed to add task: ' +
-          (error.result?.error?.message || error.message || 'Unknown error'),
+        "Failed to add task: " +
+          (error.result?.error?.message || error.message || "Unknown error")
       );
       // Remove the loading indicator
       taskList.removeChild(loadingLi);
@@ -564,18 +591,18 @@ function addNewTask(taskListId) {
 }
 // Opening add task
 function openTaskModal() {
-  document.getElementById('new-task-title').value = '';
-  document.getElementById('task-modal').style.display = 'block';
+  document.getElementById("new-task-title").value = "";
+  document.getElementById("task-modal").style.display = "block";
 }
 
 function closeTaskModal() {
-  document.getElementById('task-modal').style.display = 'none';
+  document.getElementById("task-modal").style.display = "none";
 }
 
 function submitTask() {
-  const taskTitle = document.getElementById('new-task-title').value.trim();
+  const taskTitle = document.getElementById("new-task-title").value.trim();
   if (!taskTitle || !currentTaskListId) {
-    alert('Please enter a task title.');
+    alert("Please enter a task title.");
     return;
   }
 
@@ -588,39 +615,38 @@ function submitTask() {
       tasklist: currentTaskListId,
       resource: {
         title: taskTitle,
-        status: 'needsAction',
+        status: "needsAction",
       },
     })
     .then((response) => {
-      console.log('Task added successfully:', response);
+      console.log("Task added successfully:", response);
       loadTasks(); // Обновить список
     })
     .catch((error) => {
-      console.error('Error adding task:', error);
+      console.error("Error adding task:", error);
       alert(
-        'Failed to add task: ' +
-          (error.result?.error?.message || error.message || 'Unknown error'),
+        "Failed to add task: " +
+          (error.result?.error?.message || error.message || "Unknown error")
       );
     });
 }
 
-
 // Function to update task status
 function updateTaskStatus(taskListId, taskId, isCompleted) {
   console.log(
-    'Updating task status:',
+    "Updating task status:",
     taskId,
-    isCompleted ? 'completed' : 'needsAction',
+    isCompleted ? "completed" : "needsAction"
   );
 
   // Update UI immediately for better user experience
   const taskElement = document.querySelector(`li[data-task-id="${taskId}"]`);
-  const titleElement = taskElement.querySelector('.task-title');
+  const titleElement = taskElement.querySelector(".task-title");
 
   if (isCompleted) {
-    titleElement.classList.add('completed');
+    titleElement.classList.add("completed");
   } else {
-    titleElement.classList.remove('completed');
+    titleElement.classList.remove("completed");
   }
 
   // Call the API to update the task
@@ -630,38 +656,37 @@ function updateTaskStatus(taskListId, taskId, isCompleted) {
       task: taskId,
       resource: {
         id: taskId,
-        status: isCompleted ? 'completed' : 'needsAction',
+        status: isCompleted ? "completed" : "needsAction",
       },
     })
     .then((response) => {
-      console.log('Task status updated successfully:', response);
+      console.log("Task status updated successfully:", response);
     })
     .catch((error) => {
-      console.error('Error updating task status:', error);
+      console.error("Error updating task status:", error);
       alert(
-        'Failed to update task: ' +
-          (error.result?.error?.message || error.message || 'Unknown error'),
+        "Failed to update task: " +
+          (error.result?.error?.message || error.message || "Unknown error")
       );
 
       // Revert UI changes on error
       if (isCompleted) {
-        titleElement.classList.remove('completed');
-        taskElement.querySelector('.task-checkbox').checked = false;
+        titleElement.classList.remove("completed");
+        taskElement.querySelector(".task-checkbox").checked = false;
       } else {
-        titleElement.classList.add('completed');
-        taskElement.querySelector('.task-checkbox').checked = true;
+        titleElement.classList.add("completed");
+        taskElement.querySelector(".task-checkbox").checked = true;
       }
     });
 }
 
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // Add the login container class on initial load
-  document.querySelector('.container').classList.add('container-login');
+  document.querySelector(".container").classList.add("container-login");
 
   // Load both the Google API libraries
-  const script1 = document.createElement('script');
-  script1.src = 'https://apis.google.com/js/api.js';
+  const script1 = document.createElement("script");
+  script1.src = "https://apis.google.com/js/api.js";
   script1.onload = handleClientLoad;
   document.body.appendChild(script1);
 });
