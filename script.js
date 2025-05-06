@@ -42,7 +42,6 @@ function handleClientLoad() {
   }
 }
 
-
 // Initialize just the API client without auth
 async function initializeApiClient(autoLoadData) {
   console.log("Initializing Google API client...");
@@ -206,7 +205,7 @@ function loadUserData() {
   }
 
   // Remove the login-specific container class
-  document.querySelector(".container").classList.remove("container-login");
+  document.querySelector(".container").classList.remove("logo-login");
 
   // Load calendar events first
   loadCalendarEvents()
@@ -673,7 +672,7 @@ function updateTaskStatus(taskListId, taskId, isCompleted) {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Add the login container class on initial load
-  document.querySelector(".container").classList.add("container-login");
+  document.querySelector(".container").classList.add("logo-login");
 
   // Load both the Google API libraries
   const script1 = document.createElement("script");
