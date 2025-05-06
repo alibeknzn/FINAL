@@ -521,7 +521,7 @@ function loadTasks() {
 
         li.innerHTML = `
           <input type="checkbox" class="task-checkbox" ${
-            task.status === 'completed' ? 'checked' : ''
+            (task.status && task.status === 'completed') ? 'checked' : ''
           }>
           <span class="task-title ${
             task.status === 'completed' ? 'completed' : ''
