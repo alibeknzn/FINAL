@@ -490,7 +490,7 @@ body.dark-mode .view-switch .active {
   background-color: #fff;
   margin: 10% auto;
   padding: 30px 20px;
-  border-radius: 12px;
+  border-radius: 16px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -498,20 +498,43 @@ body.dark-mode .view-switch .active {
   animation: fadeIn 0.3s ease;
 }
 
+.modal-content h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
 .modal-content input {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0 20px;
+  padding: 14px;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
+  margin-bottom: 25px;
+  box-sizing: border-box;
+}
+
+.modal-content .btn-primary {
+  padding: 12px 24px;
   font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #0077cc;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content .btn-primary:hover {
+  background-color: #005fa3;
 }
 
 .close-button {
   float: right;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
+  color: #444;
 }
 
 @keyframes fadeIn {
