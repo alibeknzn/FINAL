@@ -26,11 +26,7 @@ function handleClientLoad() {
   const tokenExpiry = localStorage.getItem(STORAGE_KEY_EXPIRY);
 
   // Check if we have a valid token that hasn't expired
-  if (
-    savedProfile &&
-    tokenExpiry &&
-    new Date().getTime() < parseInt(tokenExpiry, 10)
-  ) {
+  if (savedProfile && tokenExpiry && new Date().getTime() < parseInt(tokenExpiry, 10)) {
     userProfile = JSON.parse(savedProfile);
     console.log("Restored profile from localStorage:", userProfile);
 
@@ -46,11 +42,11 @@ function handleClientLoad() {
 }
 
 // Initialize just the API client without auth
-function initializeApiClient(autoLoadData) {
+async function initializeApiClient(autoLoadData) {
   console.log("Initializing Google API client...");
 
   try {
-    gapi.load("client", async () => {
+    await gapi.load("client", async () => {
       try {
         await gapi.client.init({
           apiKey: API_KEY,
@@ -64,7 +60,7 @@ function initializeApiClient(autoLoadData) {
             console.log("Token found, setting it...");
             gapi.client.setToken({ access_token: token });
 
-            // Показываем загрузку и загружаем данные пользователя
+            // Show loading and load user data
             document.getElementById("logo-login").style.display = "none";
             document.getElementById("loading-section").style.display = "block";
             loadUserData();
@@ -121,31 +117,7 @@ function handleAuthClick() {
     .requestAccessToken();
 }
 
-function fetchUserProfile() {
-  console.log("Fetching user profile...");
-  return fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem(STORAGE_KEY_TOKEN),
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch profile");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("User profile fetched:", data);
-      // Сохраняем профиль в localStorage
-      localStorage.setItem(STORAGE_KEY_PROFILE, JSON.stringify(data));
-      return data;
-    })
-    .catch((error) => {
-      console.error("Error fetching profile:", error);
-      throw error;
-    });
-}
-
+// Handle auth response
 function handleAuthResponse(response) {
   console.log("Auth response received:", response);
 
