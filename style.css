@@ -490,12 +490,14 @@ body.dark-mode .view-switch .active {
   background-color: #fff;
   margin: 10% auto;
   padding: 30px 20px;
-  border-radius: 16px;
+  border-radius: 20px; /* мягче углы */
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* мягкая, объёмная тень */
   text-align: center;
+  border-radius: 12px;
   animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(10px); /* доп эффект, если хочешь */
 }
 
 .modal-content h2 {
@@ -507,6 +509,7 @@ body.dark-mode .view-switch .active {
 .modal-content input {
   width: 100%;
   padding: 14px;
+  border-radius: 12px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
