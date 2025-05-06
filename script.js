@@ -691,6 +691,26 @@ function updateTaskStatus(taskListId, taskId, isCompleted) {
     });
 }
 
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  
+  // Сохраняем выбор в localStorage
+  if (document.body.classList.contains('dark-mode')) {
+    localStorage.setItem('theme', 'dark');
+  } else {
+    localStorage.setItem('theme', 'light');
+  }
+}
+
+// При загрузке применяем сохранённую тему
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
   // Add the login container class on initial load
   document.querySelector('.container').classList.add('container-login');
