@@ -31,12 +31,6 @@
            Sign in with Google
          </button>
          <div id="task-modal" class="modal">
-         <div class="modal-content">
-           <span class="close-button" onclick="closeTaskModal()">&times;</span>
-           <h2>Add a New Task</h2>
-           <input type="text" id="new-task-title" placeholder="Task title" />
-           <button class="btn-primary" onclick="submitTask()">Add Task</button>
-         </div>
        </div>
  
        </div>
@@ -48,7 +42,12 @@
            <p>Loading your data...</p>
          </div>
        </div>
- 
+       <div class="modal-content">
+           <span class="close-button" onclick="closeTaskModal()">&times;</span>
+           <h2>Add a New Task</h2>
+           <input type="text" id="new-task-title" placeholder="Task title" />
+           <button class="btn-primary" onclick="submitTask()">Add Task</button>
+        </div>
        <div id="content-section" style="display: none">
          <div class="tab-navbar">
            <div class="tabs">
