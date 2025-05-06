@@ -4,7 +4,7 @@ body {
   padding: 0;
   color: #333;
   transition: background 0.4s ease, color 0.4s ease;
-  background: url('image.png') no-repeat center center fixed;
+  background: url('pictures/image.png') no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   position: relative;
@@ -13,7 +13,7 @@ body {
   justify-content: center;
 }
 
-/* Add overlay to ensure text readability */
+/* Optional: Remove if you don't want overlay */
 body::before {
   content: '';
   position: absolute;
@@ -25,6 +25,11 @@ body::before {
   z-index: -1;
 }
 
+.logo-login {
+  overflow: hidden;
+  max-width: 300px;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -32,46 +37,23 @@ body::before {
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  transition: background 0.4s ease;
   position: relative;
-  overflow: hidden;
   backdrop-filter: blur(5px);
 }
 
-/* When not in login mode, adjust the container for better content display */
+/* If not using login mode, adjust container */
 .container:not(.container-login) {
   width: 90%;
-  max-width: 1000px;
   margin: 40px auto;
   padding: 30px 0 0 0;
 }
 
-/* Decorative elements for the Sham School theme */
-.container::before {
-  content: '';
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  width: 200px;
-  height: 200px;
-  background-color: #ffc107;
-  opacity: 0.03;
-  border-radius: 50%;
-  z-index: 0;
+/* Remove decorative circles if unnecessary */
+.container::before, 
+.container::after {
+  content: none;
 }
 
-.container::after {
-  content: '';
-  position: absolute;
-  bottom: -80px;
-  left: -80px;
-  width: 300px;
-  height: 300px;
-  background-color: #0065a9;
-  opacity: 0.03;
-  border-radius: 50%;
-  z-index: 0;
-}
 
 h1 {
   font-size: 32px;
@@ -255,46 +237,6 @@ body.dark-mode .view-switch .active {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Apple icon for Sham School logo */
-#auth-section .logo {
-  font-family: 'Montserrat', serif;
-  font-size: 42px;
-  font-weight: bold;
-  color: #0065a9;
-  margin-bottom: 30px;
-  text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7),
-    0 0 10px rgba(255, 255, 255, 0.5);
-  position: relative;
-  z-index: 1;
-  display: inline-block;
-}
-
-#auth-section .logo::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: -50px;
-  width: 40px;
-  height: 40px;
-  background-color: #ffc107;
-  border-radius: 50% 50% 50% 15%;
-  transform: rotate(-20deg);
-  z-index: -1;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
-}
-
-#auth-section .logo::after {
-  content: '';
-  position: absolute;
-  top: -25px;
-  left: -30px;
-  width: 10px;
-  height: 15px;
-  background-color: #236a3a;
-  border-radius: 2px;
-  transform: rotate(-40deg);
-  z-index: -1;
-}
 
 .auth-note {
   color: #0065a9;
