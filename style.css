@@ -441,23 +441,6 @@ body.dark-mode .view-switch .active {
   padding: 20px;
 }
 
-/* toggle dark mode*/
-
-.theme-toggle {
-  margin-left: 10px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: #ddd;
-  color: #333;
-  font-weight: 500;
-  transition: 0.3s ease;
-}
-
-body.dark-mode .theme-toggle {
-  background: #444;
-  color: #eee;
-}
-
 
 /* Tasks Display */
 #task-list {
