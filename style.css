@@ -36,36 +36,47 @@ body::before {
   height: 100vh;
   width: 100%;
   overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .auth-left {
   flex: 1;
-  background-image: url('pictures/background.jpg'); /* replace with actual image */
+  background-image: url('pictures/background.jpg'); /* путь к твоему фону */
   background-size: cover;
   background-position: center;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.auth-logo {
+.auth-left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.15); /* лёгкий белый фильтр */
+  backdrop-filter: blur(6px); /* размытый эффект */
+}
+
+.auth-left img {
   max-width: 300px;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+  z-index: 1;
 }
 
 .container {
   flex: 1;
+  background: white;
+  border-radius: 20px 0 0 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  margin: auto;
-  padding: 40px;
-  max-width: 500px;
 }
+
 
 
 /* If not using login mode, adjust container */
