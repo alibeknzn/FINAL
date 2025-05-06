@@ -14,6 +14,7 @@ const STORAGE_KEY_PROFILE = 'user_profile';
 const STORAGE_KEY_EXPIRY = 'token_expiry';
 
 let userProfile = null;
+let currentTaskListId = null;
 let isAuthorized = false;
 
 // Called when the page loads
@@ -552,8 +553,9 @@ function loadTasks() {
 
 // Function to add a new task
 function addNewTask(taskListId) {
-  const taskTitle = prompt('Enter task title:');
-  if (!taskTitle) return; // User cancelled
+  currentTaskListId = taskListId;
+  openTaskModal();
+  return;
 
   console.log('Adding new task:', taskTitle);
 
@@ -588,6 +590,48 @@ function addNewTask(taskListId) {
       taskList.removeChild(loadingLi);
     });
 }
+
+function openTaskModal() {
+  document.getElementById('new-task-title').value = '';
+  document.getElementById('task-modal').style.display = 'block';
+}
+
+function closeTaskModal() {
+  document.getElementById('task-modal').style.display = 'none';
+}
+
+function submitTask() {
+  const taskTitle = document.getElementById('new-task-title').value.trim();
+  if (!taskTitle || !currentTaskListId) {
+    alert('Please enter a task title.');
+    return;
+  }
+
+  // Скрываем модалку
+  closeTaskModal();
+
+  // Добавляем задачу
+  gapi.client.tasks.tasks
+    .insert({
+      tasklist: currentTaskListId,
+      resource: {
+        title: taskTitle,
+        status: 'needsAction',
+      },
+    })
+    .then((response) => {
+      console.log('Task added successfully:', response);
+      loadTasks(); // Обновить список
+    })
+    .catch((error) => {
+      console.error('Error adding task:', error);
+      alert(
+        'Failed to add task: ' +
+          (error.result?.error?.message || error.message || 'Unknown error'),
+      );
+    });
+}
+
 
 // Function to update task status
 function updateTaskStatus(taskListId, taskId, isCompleted) {
