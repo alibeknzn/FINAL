@@ -64,7 +64,7 @@ async function initializeApiClient(autoLoadData) {
             gapi.client.setToken({ access_token: token });
 
             // Show loading and load user data
-            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('logo-login').style.display = 'none';
             document.getElementById('loading-section').style.display = 'block';
             loadUserData();
           } else {
@@ -92,7 +92,7 @@ async function initializeApiClient(autoLoadData) {
 
 // Show the login screen
 function showLoginScreen() {
-  document.getElementById('auth-section').style.display = 'block';
+  document.getElementById('logo-login').style.display = 'block';
   document.getElementById('loading-section').style.display = 'none';
   document.getElementById('content-section').style.display = 'none';
 
