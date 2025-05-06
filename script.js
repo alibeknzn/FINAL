@@ -17,19 +17,6 @@ let userProfile = null;
 let isAuthorized = false;
 let currentTaskListId = null;
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  console.log('DOM полностью загружен и разобран');
-
-  // Ваш код, который работает с DOM
-  const logoLogin = document.getElementById("logo-login");
-  if (logoLogin) {
-    // Пример: изменить стиль элемента, если он найден
-    logoLogin.style.display = 'none';
-  } else {
-    console.error("Элемент 'logo-login' не найден на странице");
-  }
-});
-
 
 // Called when the page loads
 function handleClientLoad() {
@@ -105,13 +92,37 @@ async function initializeApiClient(autoLoadData) {
 
 // Show the login screen
 function showLoginScreen() {
-  document.getElementById("logo-login").style.display = "block";
-  document.getElementById("loading-section").style.display = "none";
-  document.getElementById("content-section").style.display = "none";
+  const logoLogin = document.getElementById("logo-login");
+  const loadingSection = document.getElementById("loading-section");
+  const contentSection = document.getElementById("content-section");
+  const container = document.querySelector(".container");
 
-  // Add the login-specific container class to better showcase the background image
-  document.querySelector(".container").classList.add("container-login");
+  if (logoLogin) {
+    logoLogin.style.display = "block"; // Показываем логин экран
+  } else {
+    console.error("Элемент 'logo-login' не найден!");
+  }
+
+  if (loadingSection) {
+    loadingSection.style.display = "none"; // Скрываем индикатор загрузки
+  } else {
+    console.error("Элемент 'loading-section' не найден!");
+  }
+
+  if (contentSection) {
+    contentSection.style.display = "none"; // Скрываем контент
+  } else {
+    console.error("Элемент 'content-section' не найден!");
+  }
+
+  if (container) {
+    // Добавляем класс для настройки контейнера, если элемент найден
+    container.classList.add("container-login");
+  } else {
+    console.error("Элемент '.container' не найден!");
+  }
 }
+
 
 // Handle auth click - using the new Identity Services
 function handleAuthClick() {
