@@ -514,6 +514,9 @@ function loadTasks() {
       console.log(`Found ${tasks.length} tasks, rendering...`);
       tasks.forEach((task) => {
         console.log('Task:', task.title, 'Status:', task.status);
+        if (!task.status) {
+          task.status = 'needsAction';
+        }
         const li = document.createElement('li');
         li.className = 'task-item';
         li.dataset.taskId = task.id;
