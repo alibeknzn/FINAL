@@ -52,22 +52,13 @@ body::before {
 }
 
 .auth-left img {
-  max-width: 160px;
+  max-width: 300px;
   margin: auto;
   display: block;
   filter: none; /* 👈 убрать размытие */
 }
 
-.auth-left::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(255, 255, 255, 0.15); /* лёгкий белый фильтр */
-  backdrop-filter: blur(6px); /* размытый эффект */
-}
+
 
 .auth-section {
   flex: 1;
