@@ -101,7 +101,7 @@ function handleAuthClick() {
   console.log('Auth button clicked, starting sign-in process...');
 
   // Show loading indicator while authenticating
-  document.getElementById('auth-section').style.display = 'none';
+  document.getElementById('logo-login').style.display = 'none';
   document.getElementById('loading-section').style.display = 'block';
 
   // Use newer Identity Services library
