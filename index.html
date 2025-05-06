@@ -1,84 +1,94 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Sham School - Calendar & Tasks Portal</title>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://accounts.google.com/gsi/client"></script>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Georgia:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container">  
-      <div id="auth-section">
-        <img src="pictures/logo.png" alt="Sham School logo" class="auth-logo" />
-        <h2>Sign in to access your data</h2>
-        <p class="auth-note">
-          Welcome to Sham School's Calendar & Tasks Portal. Sign in with your
-          Google account to view your schedule and manage your tasks.
-        </p>
-        <button
-          id="authorize-button"
-          onclick="handleAuthClick()"
-          class="btn-primary"
-        >
-          Sign in with Google
-        </button>
-
-      </div>
-      <!-- Loading indicator -->
-      <div id="loading-section" style="display: none">
-        <div class="loading-container">
-          <div class="loading-spinner"></div>
-          <p>Loading your data...</p>
-        </div>
-      </div>
-
-      <div id="content-section" style="display: none">
-        <div class="tab-navbar">
-          <div class="tabs">
-            <button class="tab active" onclick="switchTab('calendar')">
-              Calendar Events
-            </button>
-            <button class="tab" onclick="switchTab('tasks')">Tasks</button>
-          </div>
-          <div class="profile-section">
-            <span id="user-email"></span>
-            <button onclick="handleSignoutClick()" class="btn-secondary">
-              Sign Out
-            </button>
-          </div>
-        </div>
-        <div id="task-modal" class="modal" style="display: none;">
-          <div class="modal-content">
-            <span class="close-button" onclick="closeTaskModal()">&times;</span>
-            <h2>Add a New Task</h2>
-            <input type="text" id="new-task-title" placeholder="Task title" />
-            <button class="btn-primary" onclick="submitTask()">Add Task</button>
-          </div>
-        </div>
-        <div id="calendar-tab" class="tab-content">
-          <h2>Upcoming Events</h2>
-          <div id="events-list"></div>
-        </div>
-
-        <div id="tasks-tab" class="tab-content" style="display: none">
-          <h2>Tasks</h2>
-          <ul id="task-list"></ul>
-        </div>
-      </div>
-
-      <div id="debug-info" class="debug-section" style="display: none">
-        <h3>Troubleshooting Information</h3>
-        <div id="debug-content"></div>
-      </div>
-    </div>
-
-    <script src="script.js"></script>
-  </body>
-</html>
+ <html>
+   <head>
+     <meta charset="UTF-8" />
+     <title>Sham School - Calendar & Tasks Portal</title>
+     <script src="https://apis.google.com/js/api.js"></script>
+     <script src="https://accounts.google.com/gsi/client"></script>
+     <link rel="stylesheet" href="style.css" />
+     <link rel="preconnect" href="https://fonts.googleapis.com" />
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+     <link
+       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Georgia:wght@400;700&display=swap"
+       rel="stylesheet"
+     />
+   </head>
+   <body>
+     <div class="container">
+ 
+       <div id="auth-section">
+         <img src="pictures/logo.png" alt="Sham logo" class="logo-login" />
+         <h2>Sign in to access your data</h2>
+         <p class="auth-note">
+           Welcome to Sham School's Calendar & Tasks Portal. Sign in with your
+           Google account to view your schedule and manage your tasks.
+         </p>
+         <button
+           id="authorize-button"
+           onclick="handleAuthClick()"
+           class="btn-primary"
+         >
+           Sign in with Google
+         </button>
+         <div id="task-modal" class="modal">
+       </div>
+ 
+       </div>
+       <div class="modal-content">
+           <span class="close-button" onclick="closeTaskModal()">&times;</span>
+           <h2>Add a New Task</h2>
+           <input type="text" id="new-task-title" placeholder="Task title" />
+           <button class="btn-primary" onclick="submitTask()">Add Task</button>
+       </div>
+       <!-- Loading indicator -->
+       <div id="loading-section" style="display: none">
+         <div class="loading-container">
+           <div class="loading-spinner"></div>
+           <p>Loading your data...</p>
+         </div>
+       </div>
+ 
+       <div id="content-section" style="display: none">
+         <div class="tab-navbar">
+           <div class="tabs">
+             <button class="tab active" onclick="switchTab('calendar')">
+               Calendar Events
+             </button>
+             <button class="tab" onclick="switchTab('tasks')">Tasks</button>
+           </div>
+           <div class="profile-section">
+             <span id="user-email"></span>
+             <button onclick="handleSignoutClick()" class="btn-secondary">
+               Sign Out
+             </button>
+           </div>
+         </div>
+ 
+         <div id="task-modal" class="modal" style="display: none;">
+           <div class="modal-content">
+             <span class="close-button" onclick="closeTaskModal()">&times;</span>
+             <h2>Add a New Task</h2>
+             <input type="text" id="new-task-title" placeholder="Task title" />
+             <button class="btn-primary" onclick="submitTask()">Add Task</button>
+           </div>
+         </div>
+         <div id="calendar-tab" class="tab-content">
+           <h2>Upcoming Events</h2>
+           <div id="events-list"></div>
+         </div>
+ 
+         <div id="tasks-tab" class="tab-content" style="display: none">
+           <h2>Tasks</h2>
+           <ul id="task-list"></ul>
+         </div>
+       </div>
+ 
+       <div id="debug-info" class="debug-section" style="display: none">
+         <h3>Troubleshooting Information</h3>
+         <div id="debug-content"></div>
+       </div>
+     </div>
+ 
+     <script src="script.js"></script>
+   </body>
+ </html>
