@@ -44,7 +44,7 @@ body::before {
 
 .auth-left {
   flex: 1;
-  background: rgba(255, 255, 255, 0.6);
+  background: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,8 +52,12 @@ body::before {
 }
 
 .auth-left img {
-  max-width: 200px;
+  max-width: 160px;
+  margin: auto;
+  display: block;
+  filter: none; /* 👈 убрать размытие */
 }
+
 .auth-left::after {
   content: '';
   position: absolute;
