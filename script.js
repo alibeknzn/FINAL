@@ -17,6 +17,20 @@ let userProfile = null;
 let isAuthorized = false;
 let currentTaskListId = null;
 
+document.addEventListener('DOMContentLoaded', (event) => {
+  console.log('DOM полностью загружен и разобран');
+
+  // Ваш код, который работает с DOM
+  const logoLogin = document.getElementById("logo-login");
+  if (logoLogin) {
+    // Пример: изменить стиль элемента, если он найден
+    logoLogin.style.display = 'none';
+  } else {
+    console.error("Элемент 'logo-login' не найден на странице");
+  }
+});
+
+
 // Called when the page loads
 function handleClientLoad() {
   console.log("Loading GAPI client...");
