@@ -42,23 +42,6 @@ function handleClientLoad() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.querySelector(".container");
-
-  if (container) {
-    // Если элемент найден, добавляем класс
-    container.classList.add("container-login");
-  } else {
-    console.error("Элемент с классом '.container' не найден!");
-  }
-
-  // Загружаем библиотеки Google API
-  const script1 = document.createElement("script");
-  script1.src = "https://apis.google.com/js/api.js";
-  script1.onload = handleClientLoad;
-  document.body.appendChild(script1);
-});
-
 
 // Initialize just the API client without auth
 async function initializeApiClient(autoLoadData) {
