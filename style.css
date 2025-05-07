@@ -94,7 +94,6 @@ body::before {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-
 .auth-note {
   color: #4e4e4e;
   font-size: 16px;
@@ -110,7 +109,7 @@ body::before {
 }
 
 .btn-primary {
-  background-color: #ffa319;
+  background-color: #0077bc;
   color: white;
   border: none;
   padding: 15px 30px;
