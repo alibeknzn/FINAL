@@ -1,0 +1,84 @@
+/* Main CSS file that imports all other CSS components */
+
+/* Component Imports */
+@import url('./components/layout.css');
+@import url('./components/auth.css');
+@import url('./components/buttons.css');
+@import url('./components/modals.css');
+@import url('./components/tasks.css');
+@import url('./components/calendar.css');
+
+/* Base styles */
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  transition: background 0.4s ease, color 0.4s ease;
+  background: url('../assets/image.png') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add overlay to ensure text readability */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  z-index: -1;
+}
+
+/* Typography */
+h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #333;
+  font-weight: 700;
+  padding: 0 30px;
+  position: relative;
+  z-index: 1;
+}
+
+h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .tab-navbar {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #auth-section {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+
+  #auth-section .logo {
+    font-size: 32px;
+  }
+}
