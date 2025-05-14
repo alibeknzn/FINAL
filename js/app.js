@@ -67,7 +67,9 @@ function switchTab(tabName) {
 function loadUserData() {
   // Display user email
   if (userProfile && userProfile.email) {
-    document.getElementById('user-email').textContent = userProfile.email;
+    const userEmailElement = document.getElementById('user-email');
+    userEmailElement.textContent = userProfile.email;
+    userEmailElement.title = userProfile.name || userProfile.email; // Add tooltip with full name
   }
 
   // Remove the login-specific container class
