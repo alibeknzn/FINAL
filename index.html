@@ -1,38 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Sham School  Calendar & Tasks Portal</title>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://accounts.google.com/gsi/client"></script>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sham School Calendar & Tasks</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Georgia:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/main.css?v=1.0.1" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="module" src="js/app.js"></script>
   </head>
   <body>
     <div class="container">
-      <!-- right side -->
+      <!-- Auth Section -->
       <div id="auth-section">
-        <img src="pictures/logo.png" alt="Sham School logo" class="auth-logo" />
-        <h2>Sign in to access your data</h2>
+        <div class="logo">Sham School</div>
+        <h2>Calendar & Tasks Assistant</h2>
         <p class="auth-note">
-          Welcome to Sham School's Calendar & Tasks Portal. Sign in with your
-          Google account to view your schedule and manage your tasks.
+          Connect with your Google account to access your calendar and tasks.
         </p>
-        <button
-          id="authorize-button"
-          onclick="handleAuthClick()"
-          class="btn-primary"
-        >
+        <button id="authorize-button" class="btn-primary">
           Sign in with Google
         </button>
+        <p class="auth-note">
+          This application uses Google Calendar and Tasks APIs to display your
+          events and tasks.
+        </p>
       </div>
 
-      <!-- LOADING -->
+      <!-- Loading section -->
       <div id="loading-section" style="display: none">
         <div class="loading-container">
           <div class="loading-spinner"></div>
@@ -40,44 +38,96 @@
         </div>
       </div>
 
-      <!-- DASHBOARD -->
+      <!-- Main content section (shows after authentication) -->
       <div id="content-section" style="display: none">
         <div class="tab-navbar">
           <div class="tabs">
-            <button class="tab active" onclick="switchTab('calendar')">
-              Calendar Events
-            </button>
-            <button class="tab" onclick="switchTab('tasks')">Tasks</button>
+            <button class="tab active" data-tab="calendar">Calendar</button>
+            <button class="tab" data-tab="tasks">Tasks</button>
           </div>
           <div class="profile-section">
-            <span id="user-email"></span>
-            <button onclick="handleSignoutClick()" class="btn-secondary">
-              Sign Out
-            </button>
+            <span id="user-email">user@example.com</span>
+            <button id="signout-button" class="btn-secondary">Sign Out</button>
           </div>
         </div>
 
-        <div id="calendar-tab" class="tab-content">
+        <!-- Calendar Tab Content -->
+        <div id="calendar-tab" class="tab-content" style="display: block">
           <h2>Upcoming Events</h2>
-          <div id="events-list"></div>
+          <div id="events-list">
+            <!-- Calendar events will be displayed here -->
+          </div>
         </div>
 
+        <!-- Tasks Tab Content -->
         <div id="tasks-tab" class="tab-content" style="display: none">
-          <h2>Tasks</h2>
-          <ul id="task-list"></ul>
+          <div class="tasks-header">
+            <h2>My Tasks</h2>
+            <button id="add-task-btn" class="add-task-btn">
+              Add a new task
+            </button>
+          </div>
+          <ul id="task-list">
+            <!-- Tasks will be displayed here -->
+          </ul>
         </div>
       </div>
 
-    <!-- Модальное окно -->
-    <div id="task-modal" class="modal" style="display: none;">
-      <div class="modal-content">
-        <span class="close-button" onclick="closeTaskModal()">&times;</span>
-        <h2>Add a New Task</h2>
-        <input type="text" id="new-task-title" placeholder="Task title" />
-        <button class="btn-primary" onclick="submitTask()">Add Task</button>
+      <!-- Add Task Modal -->
+      <div id="task-modal-overlay" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Add New Task</h3>
+            <button id="modal-close" class="modal-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="add-task-form">
+              <div class="form-group">
+                <label for="task-title" class="form-label">Task Title</label>
+                <input
+                  type="text"
+                  id="task-title"
+                  class="form-control"
+                  placeholder="Enter task title"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="task-notes" class="form-label"
+                  >Notes (optional)</label
+                >
+                <textarea
+                  id="task-notes"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Add task details"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="task-due" class="form-label"
+                  >Due Date (optional)</label
+                >
+                <input type="date" id="task-due" class="form-control" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="cancel-task-btn" class="btn-cancel">Cancel</button>
+            <button id="submit-task-btn" class="btn-submit">Add Task</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Quote Button and Modal (moved outside container for proper fixed positioning) -->
+    <button id="quote-btn" title="Get an inspirational quote">💡</button>
+    <div id="quote-modal" class="quote-modal">
+      <div id="quote-loading" class="quote-loading">
+        <div class="quote-spinner"></div>
+      </div>
+      <p id="quote-content" class="quote-content"></p>
+      <p id="quote-author" class="quote-author"></p>
+      <button id="quote-close" class="quote-close">&times;</button>
+    </div>
   </body>
 </html>
