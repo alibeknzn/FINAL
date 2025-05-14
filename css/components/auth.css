@@ -31,6 +31,7 @@
 #auth-section h2 {
   color: #0065a9;
   font-size: 28px;
+  margin-top: 10px;
   margin-bottom: 5px;
   position: relative;
   z-index: 1;
@@ -39,46 +40,23 @@
 
 /* Apple icon for Sham School logo */
 #auth-section .logo {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 48px;
-  font-weight: 700;
-  color: #0065a9;
-  margin-bottom: 30px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  letter-spacing: -1px;
-  background: linear-gradient(45deg, #0065a9, #1a8cd8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-transform: uppercase;
-}
-
-#auth-section .logo::before {
-  content: '';
+  width: 200px;
+  height: auto;
   display: block;
-  width: 40px;
-  height: 40px;
-  background: url('../assets/logo.png') no-repeat center center;
-  background-size: contain;
-  position: relative;
-  top: 0;
-  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
 }
-
-/* Remove the old leaf style */
+/* Remove the old pseudo-elements since we're using img tag now */
+#auth-section .logo::before,
 #auth-section .logo::after {
   display: none;
 }
 
 .auth-note {
-  color: #0065a9;
+  color: #464646;
   font-size: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
@@ -90,14 +68,16 @@
 }
 
 /* Standard auth note */
-.auth-note {
+.auth-note:last-of-type {
   font-size: 14px;
   color: #666;
-  margin-top: 16px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+.btn-primary {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 /* Google Identity Services */
