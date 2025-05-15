@@ -9,7 +9,7 @@ A web application that integrates Google Calendar and Google Tasks to help users
 ## ✨ Features
 
 * **Google Sign-In** using OAuth2
-* **View Upcoming Calendar Events** (next 30 days)
+* **View Upcoming Calendar Events** (next 20 subjects)
 * **Task Manager** with 3 states: To Do, In Progress, Completed
 * **Add Task Modal Form** (with due date and notes)
 * **Quotes Generator** (fetches from public API)
